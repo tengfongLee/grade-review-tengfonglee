@@ -5,29 +5,58 @@ rm -rf grading-area
 
 mkdir grading-area
 
-if [ -f $1 ]
-then
+#check if argument exsit
+
+if [ -z "$1" ]; then
     echo "Usage: $0 <github URL>"
     exit 1
 fi
+echo $?
 
 git clone $1 student-submission
 echo 'Finished cloning'
+if [ ! -f "student-submission/ListExamples.java" ] 
+then
+    echo "The student code is missing the ListExamples.java file."
+    exit 1
+fi
+echo $?
+
 cp -r student-submission/ grading-area/
 cp ListTester.java grading-area/
 cd grading-area
 
 
-javac -cp $CPATH:. ListTester.java ListExamples.java
-echo $?
+#test the file
+javac -cp $CPATH:. ListTester.java ListExamples.java >> output.txt 2>> errorOutput.txt
+#check if the ListExamples.java are the file we got
+if [ $? -ne 0 ]
+then
+    echo "The file might be wrong, file name must be ListExamples.java" 1>&2 >> errorOutput.class
+fi
 
-java -cp $CPATH:. org.junit.runner.JUnitCore ListTester ListExamples > output.txt
-echo $?
+#do the test
+java -cp $CPATH:. org.junit.runner.JUnitCore ListTester >> output.txt
 
-#calculate grade, report specifi tests
+#grade are return from .java
+grade=$?
 
-# Draw a picture/take notes on the directory structure that's set up after
-# getting to this point
+#check grade, grade are calculated in .java
+if [ $grade -eq 0 ]
+then 
+    echo "All tests passed. Grade: A" | tee -a output.txt #output on terminal & into file
+elif [ $grade -eq 1 ]
+then
+    echo "One test failed. Grade: B" | tee -a output.txt
+elif [ $grade -eq 2 ] 
+then
+    echo "Two tests failed. Grade: C" | tee -a output.txt
+else
+    echo "Multiple tests failed. Grade: D" | tee -a out.txt
+fi
 
-# Then, add here code to compile and run, and do any post-processing of the
-# tests
+
+
+
+
+   

@@ -1,21 +1,75 @@
 import static org.junit.Assert.*;
 import java.util.ArrayList;
-import static org.hamcrest.CoreMatchers.*;
 import java.util.List;
 import org.junit.*;
+import org.junit.runner.*;
+
+
+import junit.textui.TestRunner;
 
 public class ListTester {
+    List<String> stringList;
+    List<String> strListContainNull;
+    List<String> strListContainNo; //list like containNull but no Null
+    List<String> strListsInOrder;
+    List<String> testing;
+    List<String> testing2;
+    List<String> expect ;
+
+    public static void main(String[] args) {
+        Result result = JUnitCore.runClasses(TestRunner.class);
+        int exitStatus = result.wasSuccessful() ? 0 : result.getFailureCount();
+        System.exit(exitStatus);
+    }
+
+    @Before
+    public void setter(){
+        stringList = new ArrayList<>();
+        stringList.add("a");
+        stringList.add("b");
+        stringList.add("f");
+
+        strListContainNull = new ArrayList<>();
+        strListContainNull.add("c");
+        strListContainNull.add(null);
+        strListContainNull.add("g");
+        strListContainNull.add("e");
+
+        strListContainNo = new ArrayList<>();
+        strListContainNo.add("c");
+        strListContainNo.add("g");
+        strListContainNo.add("e");
+
+        strListsInOrder = new ArrayList<>();
+        strListsInOrder.add("a");
+        strListsInOrder.add("b");
+        strListsInOrder.add("c");
+        strListsInOrder.add("f");
+        strListsInOrder.add("g");
+        strListsInOrder.add("e");
+
+
+        testing = new ArrayList<>();
+        testing.add("a");
+        testing.add("c");
+        testing.add("e");
+
+        testing2 = new ArrayList<>();
+        testing2.add("b");
+        testing2.add("d");
+
+        expect = new ArrayList<>();
+        expect.add("a");
+        expect.add("b");
+        expect.add("c");
+        expect.add("d");
+        expect.add("e");
+    }
+
     @Test
     public void filterTester(){
+         
 
-
-
-
-        List<String> stringList = new ArrayList<>();
-        stringList.add("first");
-        stringList.add("1");
-        stringList.add("2");
-        stringList.add("second");  
 
         StringChecker checker = new StringChecker(){
             @Override
@@ -24,9 +78,17 @@ public class ListTester {
             }
         };
         
+
+        
+
         List<String> filtered = ListExamples.filter(stringList, checker);
 
         assertEquals("", stringList, filtered);
+
+        List<String> filtered2 = ListExamples.filter(strListContainNull, checker);
+
+        assertEquals("", strListContainNo, filtered2);
+
        
 
 
@@ -35,29 +97,18 @@ public class ListTester {
 
     @Test
     public void mergeTester(){
-        List<String> testing = new ArrayList<>();
-        List<String> testing2 = new ArrayList<>();
-        List<String> expect = new ArrayList<>();
-
-        testing.add("a");
-        testing.add("c");
-        testing.add("e");
-        testing2.add("b");
-        testing2.add("d");
         
-        expect.add("a");
-        expect.add("b");
-        expect.add("c");
-        expect.add("d");
-        expect.add("e");
 
-        ListExamples.merge(testing, testing2);
 
-        assertEquals("was not expect list", expect, ListExamples.merge(testing, testing2));
+        assertEquals("was not expect list",
+            expect, ListExamples.merge(testing, testing2));
+        assertEquals("was not expect list",
+            strListsInOrder, ListExamples.merge(strListContainNo, stringList));
 
         
 
     }
+
 
    
 
