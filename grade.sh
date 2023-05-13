@@ -1,4 +1,4 @@
-CPATH='.:lib/hamcrest-core-1.3.jar:lib/junit-4.13.2.jar'
+CPATH=':../lib/hamcrest-core-1.3.jar:../lib/junit-4.13.2.jar'      
 
 rm -rf student-submission
 rm -rf grading-area
@@ -14,15 +14,14 @@ fi
 git clone $1 student-submission
 echo 'Finished cloning'
 cp -r student-submission/ grading-area/
-cp ListTester.java/ grading-area/
+cp ListTester.java grading-area/
 cd grading-area
 
 
-javac -cp ../lib/junit-4.13.2.jar:../libs/hamcrest-2.2.jar:. ../ListTester.java
+javac -cp $CPATH:. ListTester.java ListExamples.java
 echo $?
 
-java -cp ../lib/junit-4.13.2.jar:../libs/hamcrest-2.2.jar:. org.junit.runner.JUnitCore ListTester > output.txt
-cat output.txt
+java -cp $CPATH:. org.junit.runner.JUnitCore ListTester ListExamples > output.txt
 echo $?
 
 #calculate grade, report specifi tests
