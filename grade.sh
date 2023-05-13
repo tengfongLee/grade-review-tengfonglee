@@ -1,11 +1,11 @@
-CPATH='../lib/junit-4.13.2.jar:../lib/hamcrest-core-1.3.jar:.'
+CPATH='.:lib/hamcrest-core-1.3.jar:lib/junit-4.13.2.jar'
 
 rm -rf student-submission
 rm -rf grading-area
 
 mkdir grading-area
 
-if [-z "$1"]
+if [ -f $1 ]
 then
     echo "Usage: $0 <github URL>"
     exit 1
@@ -17,10 +17,10 @@ cp -r student-submission/ grading-area/
 cd grading-area
 
 
-javac CPATH ListTests.java
+javac -cp ../lib/junit-4.13.2.jar:../libs/hamcrest-2.2.jar:. ../ListTester.java
 echo $?
 
-java -cp CPATHorg.junit.runner.JUnitCore ListTests > output.txt
+java -cp ../lib/junit-4.13.2.jar:../libs/hamcrest-2.2.jar:. org.junit.runner.JUnitCore ../ListTester > output.txt
 cat output.txt
 echo $?
 

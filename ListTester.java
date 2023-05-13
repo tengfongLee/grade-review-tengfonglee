@@ -4,13 +4,7 @@ import static org.hamcrest.CoreMatchers.*;
 import java.util.List;
 import org.junit.*;
 
-public class ListTests {
-
-    @Before
-    public void setter(){
-        List<String> ListExamples = new ArrayList<>();
-    }
-
+public class ListTester {
     @Test
     public void filterTester(){
 
@@ -18,17 +12,24 @@ public class ListTests {
 
 
         List<String> stringList = new ArrayList<>();
-        List<String> answer = new ArrayList<>();
-        answer.add("first");
-        answer.add("1");
-        answer.add("first");
-        answer.add("second");
         stringList.add("first");
         stringList.add("1");
-        stringList.add("first");
+        stringList.add("2");
         stringList.add("second");  
 
-        assertThat(ListExamples.filter(stringList),is(answer));
+        StringChecker checker = new StringChecker(){
+            @Override
+            public boolean checkString(String s){
+                return s instanceof String;
+            }
+        };
+        
+        List<String> filtered = ListExamples.filter(stringList, checker);
+
+        assertEquals("", stringList, filtered);
+       
+
+
 
     }
 
