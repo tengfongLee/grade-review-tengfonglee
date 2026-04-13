@@ -37,8 +37,8 @@ public class ListTester {
 
         strListContainNo = new ArrayList<>();
         strListContainNo.add("c");
-        strListContainNo.add("e");
         strListContainNo.add("g");
+        strListContainNo.add("e");
 
         strListsInOrder = new ArrayList<>();
         strListsInOrder.add("a");
