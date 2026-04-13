@@ -83,11 +83,11 @@ public class ListTester {
 
         List<String> filtered = ListExamples.filter(stringList, checker);
 
-        assertEquals("", stringList, filtered);
+        assertEquals("was not expect list", stringList, filtered);
 
         List<String> filtered2 = ListExamples.filter(strListContainNull, checker);
 
-        assertEquals("", strListContainNo, filtered2);
+        assertEquals("was not expect list", strListContainNo, filtered2);
 
        
 
