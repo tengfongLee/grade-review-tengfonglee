@@ -5,7 +5,7 @@ import org.junit.*;
 import org.junit.runner.*;
 
 
-import junit.textui.TestRunner;
+
 
 public class ListTester {
     List<String> stringList;
@@ -17,7 +17,7 @@ public class ListTester {
     List<String> expect ;
 
     public static void main(String[] args) {
-        Result result = JUnitCore.runClasses(TestRunner.class);
+        Result result = JUnitCore.runClasses(ListTester.class);
         int exitStatus = result.wasSuccessful() ? 0 : result.getFailureCount();
         System.exit(exitStatus);
     }
