@@ -44,9 +44,9 @@ public class ListTester {
         strListsInOrder.add("a");
         strListsInOrder.add("b");
         strListsInOrder.add("c");
+        strListsInOrder.add("e");
         strListsInOrder.add("f");
         strListsInOrder.add("g");
-        strListsInOrder.add("e");
 
 
         testing = new ArrayList<>();
