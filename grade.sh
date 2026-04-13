@@ -52,7 +52,7 @@ elif [ $grade -eq 2 ]
 then
     echo "Two tests failed. Grade: C" | tee -a output.txt
 else
-    echo "Multiple tests failed. Grade: D" | tee -a out.txt
+    echo "Multiple tests failed. Grade: D" | tee -a output.txt
 fi
 
 
