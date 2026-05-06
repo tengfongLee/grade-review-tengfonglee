@@ -11,7 +11,7 @@ if [ -z "$1" ]; then
     echo "Usage: $0 <github URL>"
     exit 1
 fi
-echo $?
+
 
 git clone $1 student-submission
 echo 'Finished cloning'
@@ -20,7 +20,7 @@ then
     echo "The student code is missing the ListExamples.java file."
     exit 1
 fi
-echo $?
+
 
 cp student-submission/ListExamples.java grading-area/
 cp ListTester.java grading-area/
@@ -34,7 +34,8 @@ javac -cp "$CPATH":. ListTester.java ListExamples.java StringChecker.java >> out
 #check if the ListExamples.java are the file we got
 if [ $? -ne 0 ]
 then
-    echo "The file might be wrong, file name must be ListExamples.java" 1>&2 >> errorOutput.class
+    echo "Compilation failed. Grade: D" | tee -a output.txt
+    exit 1
 fi
 
 #do the test
