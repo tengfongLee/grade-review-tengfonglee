@@ -22,13 +22,15 @@ then
 fi
 echo $?
 
-cp -r student-submission/ grading-area/
+cp student-submission/ListExamples.java grading-area/
 cp ListTester.java grading-area/
+cp StringChecker.java grading-area/
+
 cd grading-area
 
 
 #test the file
-javac -cp $CPATH:. ListTester.java ListExamples.java >> output.txt 2>> errorOutput.txt
+javac -cp "$CPATH":. ListTester.java ListExamples.java StringChecker.java >> output.txt 2>> errorOutput.txt
 #check if the ListExamples.java are the file we got
 if [ $? -ne 0 ]
 then
@@ -36,7 +38,7 @@ then
 fi
 
 #do the test
-java -cp $CPATH:. org.junit.runner.JUnitCore ListTester >> output.txt
+java -cp "$CPATH":. ListTester >> output.txt
 
 #grade are return from .java
 grade=$?
