@@ -1,48 +1,74 @@
-## Run `ListTester` Locally (Windows)
+## Run the Autograder Locally
 
-To run `ListTester.java` individually, make sure the following files are in the **same folder**:
+This project includes a simple Java/JUnit grading pipeline. The script clones a student submission, checks for `ListExamples.java`, compiles it with the tester, runs the tests, and maps the number of failed tests to a grade.
 
-- `ListTester.java`
-- `ListExamples.java`
-- `StringChecker.java`
+### Grader files
 
-Also include the `lib/` folder in that same directory.
+The autograder folder should contain:
 
-Your folder should look like this:
-
-```
-your-folder/
+```text
+grade-review-tengfonglee-main/
+├── grade.sh
 ├── ListTester.java
-├── ListExamples.java
 ├── StringChecker.java
 └── lib/
     ├── junit-4.13.2.jar
     └── hamcrest-core-1.3.jar
 ```
 
-Step 1: Open Terminal in VSCode
-Open the project folder in VSCode
-Click Terminal → New Terminal
+The student submission should contain:
 
-Step 2: Navigate to the folder
-cd path\to\your-folder
+```text
+ListExamples.java
+```
 
-Example:
+### Run the full grading script
 
-cd C:\Users\YourName\Desktop\autograde_test
+For local testing, create a fake student repo next to the autograder folder:
 
-Step 3: Compile the files
-javac -cp ".;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar" ListTester.java ListExamples.java StringChecker.java
+```text
+autograder-local-test/
+├── grade-review-tengfonglee-main/
+└── fake-student-good/
+    └── ListExamples.java
+```
 
-Step 4: Run the tests
-java -cp ".;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar" org.junit.runner.JUnitCore ListTester
+Initialize the fake student repo:
 
-Step 5: Check the exit code
-echo $LASTEXITCODE
+```bash
+cd fake-student-good
+git init
+git add ListExamples.java
+git commit -m "add ListExamples"
+```
 
+Then run the grader from the autograder folder:
 
-The terminal should return:
+```bash
+cd ../grade-review-tengfonglee-main
+bash grade.sh ../fake-student-good
+```
 
-0
+Expected output for a correct submission:
 
-This means all tests passed successfully and ListExamples.java satisfies the test cases.
+```text
+Finished cloning
+All tests passed. Grade: A
+```
+
+The exit code from `ListTester.java` represents the number of failed tests:
+
+```text
+0 = all tests passed
+1 = one test failed
+2 = two tests failed
+3+ = multiple tests failed
+```
+
+### Notes
+
+- `ListTester.java` contains the JUnit tests.
+- `StringChecker.java` defines the interface used by `filter`.
+- `grade.sh` automates clone, file check, compile, test, and grade mapping.
+- `ListExamples.java` normally comes from the student submission.
+- The script supports both Windows Git Bash and Unix-like systems by selecting the correct Java classpath separator.
