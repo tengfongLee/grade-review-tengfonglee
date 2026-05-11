@@ -1,4 +1,16 @@
-CPATH=':../lib/hamcrest-core-1.3.jar:../lib/junit-4.13.2.jar'      
+# Auto-detect Java classpath separator
+# Windows Java uses ;
+# Mac/Linux Java uses :
+case "$(uname -s)" in
+    MINGW*|MSYS*|CYGWIN*)
+        SEP=';'
+        ;;
+    *)
+        SEP=':'
+        ;;
+esac
+
+CPATH=".${SEP}../lib/hamcrest-core-1.3.jar${SEP}../lib/junit-4.13.2.jar" 
 
 rm -rf student-submission
 rm -rf grading-area
@@ -8,13 +20,20 @@ mkdir grading-area
 #check if argument exsit
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <github URL>"
+    echo "Usage: $0 <github URL or local repo path>"
     exit 1
 fi
 
 
-git clone $1 student-submission
+git clone "$1" student-submission
+
+if [ $? -ne 0 ]; then
+    echo "Failed to clone student submission. Grade: D"
+    exit 1
+fi
+
 echo 'Finished cloning'
+
 if [ ! -f "student-submission/ListExamples.java" ] 
 then
     echo "The student code is missing the ListExamples.java file."
@@ -29,8 +48,8 @@ cp StringChecker.java grading-area/
 cd grading-area
 
 
-#test the file
-javac -cp "$CPATH":. ListTester.java ListExamples.java StringChecker.java >> output.txt 2>> errorOutput.txt
+# Compile student code with tester
+javac -cp "$CPATH" ListTester.java ListExamples.java StringChecker.java >> output.txt 2>> errorOutput.txt
 #check if the ListExamples.java are the file we got
 if [ $? -ne 0 ]
 then
@@ -39,7 +58,7 @@ then
 fi
 
 #do the test
-java -cp "$CPATH":. ListTester >> output.txt
+java -cp "$CPATH" ListTester >> output.txt 2>> errorOutput.txt
 
 #grade are return from .java
 grade=$?
